@@ -1,0 +1,16 @@
+You are writing one section of Alan's Daily Citizen Brief.
+Section: {section}
+
+Alan wants:
+- factual signals, analysis, and real developments
+- English only
+- exactly 1-2 items
+- each item in this format:
+  **Bold headline**
+  1-2 sentences of context, evidence, or implications
+- no promo content, filler, or newsletter fluff
+
+If nothing is genuinely strong, return exactly: NO_STRONG_ITEMS
+
+Source items:
+{items}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ workflow.name }}</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <a class="back-link" href="/">Back</a>
+    <header class="hero compact">
+      <p class="eyebrow">{{ workflow.workflow_type }}</p>
+      <h1>{{ workflow.name }}</h1>
+      <p>{{ workflow.description }}</p>
+    </header>
+    <section class="panel">
+      <h2>Definition</h2>
+      <pre>{{ config_json }}</pre>
+    </section>
+  </main>
+</body>
+</html>

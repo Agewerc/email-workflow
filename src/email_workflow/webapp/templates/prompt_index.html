@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prompt Files</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <a class="back-link" href="/">Back</a>
+    <section class="panel">
+      <div class="panel-header">
+        <h1>Prompt Files</h1>
+      </div>
+      <div class="prompt-list">
+        {% for prompt in prompts %}
+        <a class="prompt-item" href="/prompts/{{ prompt }}">{{ prompt }}</a>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+</body>
+</html>

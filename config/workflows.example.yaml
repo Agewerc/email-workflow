@@ -1,0 +1,58 @@
+workflows:
+  - id: citizen-brief
+    workflow_type: citizen_brief
+    enabled: true
+    name: Citizen Brief
+    description: Daily intelligence briefing synthesized from Gmail newsletters and inbox activity.
+    tags:
+      - gmail
+      - briefing
+      - llm
+    config:
+      email_account: alangewerc@gmail.com
+      email_to: alangewerc@gmail.com
+      email_subject: "Daily Citizen Brief for Alan"
+      model_provider: deepseek
+      models:
+        deepseek:
+          api_key_env: DEEPSEEK_API_KEY
+          base_url: https://api.deepseek.com/v1
+          model: deepseek-chat
+          cost_per_1m_input: 0.14
+          cost_per_1m_output: 0.28
+        openai:
+          api_key_env: OPENAI_API_KEY
+          base_url: https://api.openai.com/v1
+          model: gpt-4o-mini
+          cost_per_1m_input: 0.15
+          cost_per_1m_output: 0.60
+      sections:
+        - name: News
+          query: 'label:"Newsletter/News" newer_than:1d'
+          max_threads: 5
+        - name: Economics
+          query: 'label:"Newsletter/Business.Economics" newer_than:1d'
+          max_threads: 5
+        - name: Brazil
+          query: 'label:"Newsletter/Brasil" newer_than:1d'
+          max_threads: 4
+        - name: Tech/AI
+          query: 'label:"Newsletter/Tech.AI" newer_than:1d'
+          max_threads: 5
+        - name: Prof G Insights
+          query: 'label:"Newsletter/Prof G" newer_than:1d'
+          max_threads: 3
+      inbox_section:
+        enabled: true
+        name: Inbox Highlights
+        query: "newer_than:1d in:inbox -label:Newsletter"
+        max_threads: 8
+      body_max_chars: 2500
+      llm_retries: 2
+      llm_timeout_seconds: 30
+      prompt_files:
+        section: config/prompts/citizen_brief_section.txt
+        inbox: config/prompts/citizen_brief_inbox.txt
+        editor: config/prompts/citizen_brief_editor.txt
+      template_html: src/email_workflow/templates/digest.html.j2
+      template_text: src/email_workflow/templates/digest.txt.j2

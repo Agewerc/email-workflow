@@ -1,0 +1,7 @@
+app:
+  webapp_host: 127.0.0.1
+  webapp_port: 8000
+  webapp_reload: true
+  log_level: INFO
+  run_dir: runs
+  log_dir: logs

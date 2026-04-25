@@ -1,0 +1,148 @@
+:root {
+  --ink: #14212b;
+  --muted: #5d7383;
+  --line: #d4dde4;
+  --accent: #0d6b78;
+  --accent-soft: #dff2f5;
+  --paper: #ffffff;
+  --bg: linear-gradient(180deg, #f3f7f9 0%, #e7eff3 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Avenir Next", "Helvetica Neue", sans-serif;
+}
+
+.shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 18px 56px;
+}
+
+.hero {
+  background: linear-gradient(140deg, #12344d, #0d6b78);
+  color: #f9fdff;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 18px 42px rgba(18, 52, 77, 0.18);
+}
+
+.hero.compact {
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 12px;
+  opacity: 0.76;
+}
+
+.panel {
+  margin-top: 18px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 8px 22px rgba(20, 33, 43, 0.06);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.panel-header a,
+.back-link,
+.prompt-item,
+.workflow-card {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.workflow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.workflow-card {
+  display: block;
+  padding: 18px;
+  border-radius: 16px;
+  background: #f9fcfd;
+  border: 1px solid #dbe6eb;
+}
+
+.workflow-card h3,
+.workflow-card p,
+.workflow-card span {
+  margin: 0 0 10px;
+}
+
+.workflow-card span {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  font-size: 12px;
+}
+
+pre,
+textarea {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: #f7fafc;
+  padding: 16px;
+  font: 14px/1.5 "SFMono-Regular", Menlo, monospace;
+}
+
+textarea {
+  min-height: 420px;
+  resize: vertical;
+}
+
+.prompt-list {
+  display: grid;
+  gap: 10px;
+}
+
+.prompt-item {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f9fcfd;
+  border: 1px solid #dbe6eb;
+}
+
+.prompt-form button {
+  margin-top: 12px;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .shell {
+    padding: 16px 12px 32px;
+  }
+
+  .panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,0 +1,19 @@
+{{ subject }}
+Date: {{ date_label }}
+============================================================
+
+{% for section in sections -%}
+[ {{ section.name.upper() }} ]
+{% if section.summary == "NO_STRONG_ITEMS" -%}
+  No strong items made the cut.
+{% else -%}
+{% for line in section.summary.splitlines() -%}
+{% if line.strip() -%}
+  {{ line.strip().replace('**', '') }}
+{% endif -%}
+{% endfor -%}
+{% endif %}
+
+{% endfor -%}
+------------------------------------------------------------
+{{ footer_label }} · {{ date_label }}

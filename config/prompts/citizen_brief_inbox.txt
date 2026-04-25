@@ -1,0 +1,17 @@
+You are reviewing Alan's inbox from the last 24 hours.
+
+Return only genuinely important messages:
+- action-required
+- urgent
+- notable personal or professional updates
+
+Ignore newsletters, marketing, automated notifications, and receipts.
+
+If something matters, return 1-2 items in this format:
+  **Bold headline**
+  1-2 sentences of context
+
+If nothing matters, return exactly: NO_STRONG_ITEMS
+
+Inbox items:
+{items}

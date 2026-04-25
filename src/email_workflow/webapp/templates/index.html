@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Workflow Admin</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">Admin Surface</p>
+      <h1>Email Workflow Platform</h1>
+      <p>Inspect configured workflows and manage prompt assets.</p>
+    </header>
+    <section class="panel">
+      <div class="panel-header">
+        <h2>Workflows</h2>
+        <a href="/prompts/">Prompt Files</a>
+      </div>
+      <div class="workflow-grid">
+        {% for workflow in workflows %}
+        <a class="workflow-card" href="/workflows/{{ workflow.id }}">
+          <h3>{{ workflow.name }}</h3>
+          <p>{{ workflow.description }}</p>
+          <span>{{ workflow.workflow_type }}</span>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+</body>
+</html>
