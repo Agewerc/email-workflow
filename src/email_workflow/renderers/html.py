@@ -8,6 +8,15 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from email_workflow.schemas import SectionContent
 
+SECTION_ICONS = {
+    "News": "📰",
+    "Economics": "📈",
+    "Brazil": "🇧🇷",
+    "Tech/AI": "🤖",
+    "Prof G Insights": "🎙️",
+    "Inbox Highlights": "📬",
+}
+
 
 def render_digest_html(
     template_path: Path,
@@ -31,4 +40,5 @@ def render_digest_html(
         date_label=date_label,
         footer_label=footer_label,
         sections=sections,
+        section_icons=SECTION_ICONS,
     )

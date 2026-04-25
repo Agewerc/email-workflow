@@ -3,7 +3,7 @@ Date: {{ date_label }}
 ============================================================
 
 {% for section in sections -%}
-[ {{ section.name.upper() }} ]
+[ {{ section_icons.get(section.name, '✦') }} {{ section.name.upper() }} ]
 {% if section.summary == "NO_STRONG_ITEMS" -%}
   No strong items made the cut.
 {% else -%}

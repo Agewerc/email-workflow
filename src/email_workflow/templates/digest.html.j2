@@ -14,14 +14,16 @@
     </div>
     {% for section in sections %}
     <section style="background:#ffffff;border:1px solid #d8e2ea;border-radius:16px;padding:18px 20px;margin-bottom:16px;box-shadow:0 6px 16px rgba(19,32,43,0.06);">
-      <h2 style="margin:0 0 12px;font-size:16px;text-transform:uppercase;letter-spacing:0.08em;color:#087e8b;">{{ section.name }}</h2>
+      <h2 style="margin:0 0 12px;font-size:16px;text-transform:uppercase;letter-spacing:0.08em;color:#087e8b;">{{ section_icons.get(section.name, '✦') }} {{ section.name }}</h2>
       {% if section.summary == "NO_STRONG_ITEMS" %}
       <p style="margin:0;color:#6a7b88;font-style:italic;">No strong items made the cut.</p>
       {% else %}
         {% for line in section.summary.splitlines() %}
           {% set stripped = line.strip() %}
           {% if stripped %}
-            {% if stripped.startswith('**') and stripped.endswith('**') %}
+            {% if stripped.startswith('- **') and stripped.endswith('**') %}
+            <p style="margin:14px 0 6px;font-size:17px;font-weight:700;color:#13202b;">{{ stripped[4:-2] }}</p>
+            {% elif stripped.startswith('**') and stripped.endswith('**') %}
             <p style="margin:14px 0 6px;font-size:17px;font-weight:700;color:#13202b;">{{ stripped[2:-2] }}</p>
             {% else %}
             <p style="margin:0 0 10px;font-size:14px;line-height:1.65;color:#314452;">{{ stripped }}</p>

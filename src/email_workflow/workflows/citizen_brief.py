@@ -101,21 +101,34 @@ class CitizenBriefWorkflow(BaseWorkflow):
         cost = self._estimate_cost(config, response.input_tokens, response.output_tokens)
         return response.text.strip() or "NO_STRONG_ITEMS", response.input_tokens, response.output_tokens, cost
 
+    def _normalize_summary(self, text: str) -> str:
+        normalized = text.strip()
+        if normalized in {"NO_STRONG_ITEMS", "- NO_STRONG_ITEMS", "* NO_STRONG_ITEMS"}:
+            return "NO_STRONG_ITEMS"
+        return normalized
+
+    def _normalize_section_heading(self, text: str) -> str:
+        normalized = text.strip()
+        if normalized.startswith("**") and normalized.endswith("**") and len(normalized) > 4:
+            normalized = normalized[2:-2].strip()
+        return normalized
+
     def _parse_editor_output(self, text: str, section_names: list[str]) -> dict[str, str]:
         parsed: dict[str, str] = {}
         current: str | None = None
         buffer: list[str] = []
+        valid_names = set(section_names)
         for line in text.splitlines():
-            stripped = line.strip()
-            if stripped in section_names:
+            stripped = self._normalize_section_heading(line)
+            if stripped in valid_names:
                 if current is not None:
-                    parsed[current] = "\n".join(buffer).strip() or "NO_STRONG_ITEMS"
+                    parsed[current] = self._normalize_summary("\n".join(buffer))
                 current = stripped
                 buffer = []
             elif current is not None:
                 buffer.append(line)
         if current is not None:
-            parsed[current] = "\n".join(buffer).strip() or "NO_STRONG_ITEMS"
+            parsed[current] = self._normalize_summary("\n".join(buffer))
         for name in section_names:
             parsed.setdefault(name, "NO_STRONG_ITEMS")
         return parsed
@@ -136,6 +149,7 @@ class CitizenBriefWorkflow(BaseWorkflow):
             prompt_template = inbox_prompt if config.inbox_section and section.name == config.inbox_section.name else section_prompt
             prompt = prompt_template.format(section=section.name, items=self._format_items_for_prompt(section.items))
             summary, input_tokens, output_tokens, cost = self._call_prompt(ctx, prompt)
+            summary = self._normalize_summary(summary)
             cost_calls.append(
                 {
                     "section": section.name,

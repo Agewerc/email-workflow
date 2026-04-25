@@ -7,6 +7,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 from email_workflow.schemas import SectionContent
+from email_workflow.renderers.html import SECTION_ICONS
 
 
 def render_digest_text(
@@ -24,4 +25,5 @@ def render_digest_text(
         date_label=date_label,
         footer_label=footer_label,
         sections=sections,
+        section_icons=SECTION_ICONS,
     )

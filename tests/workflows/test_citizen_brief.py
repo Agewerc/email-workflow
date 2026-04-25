@@ -8,8 +8,8 @@ from email_workflow.workflows.citizen_brief import CitizenBriefWorkflow
 class DummyLLMProvider:
     def complete(self, prompt, config):
         if "Return this exact structure" in prompt:
-            return type("Resp", (), {"text": "News\n**Headline**\nContext", "input_tokens": 5, "output_tokens": 5})()
-        return type("Resp", (), {"text": "**Headline**\nContext", "input_tokens": 5, "output_tokens": 5})()
+            return type("Resp", (), {"text": "Here is the final brief.\n\n**News**\n- **Headline**\nContext", "input_tokens": 5, "output_tokens": 5})()
+        return type("Resp", (), {"text": "- **Headline**\nContext", "input_tokens": 5, "output_tokens": 5})()
 
 
 class DummyEmailProvider:
@@ -65,3 +65,9 @@ def test_citizen_brief_render_creates_email_artifacts(tmp_path: Path) -> None:
     assert result.status.value == "success"
     assert (tmp_path / "email.html").exists()
     assert (tmp_path / "summaries.json").exists()
+    html = (tmp_path / "email.html").read_text(encoding="utf-8")
+    text = (tmp_path / "email.txt").read_text(encoding="utf-8")
+    assert "**Headline**" not in html
+    assert ">Headline<" in html
+    assert "📰 News" in html
+    assert "[ 📰 NEWS ]" in text
