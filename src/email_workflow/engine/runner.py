@@ -10,15 +10,17 @@ from email_workflow.engine.registry import WorkflowRegistry
 from email_workflow.providers.content.gmail import GmailContentProvider
 from email_workflow.providers.email.gmail_gog import GogEmailProvider
 from email_workflow.providers.llm.deepseek import DeepSeekProvider
+from email_workflow.providers.signals.weekend_weather_surf import WeekendWeatherSurfProvider
 from email_workflow.schemas import AppSettings, WorkflowCatalog, load_workflow_catalog
 from email_workflow.utils.dates import timestamp_slug
 from email_workflow.utils.files import ensure_directory, project_root, resolve_project_path
-from email_workflow.workflows import CitizenBriefWorkflow, SurfReportWorkflow, WeatherReportWorkflow
+from email_workflow.workflows import CitizenBriefWorkflow, WeekendWeatherSurfWorkflow, SurfReportWorkflow, WeatherReportWorkflow
 
 
 def create_default_registry() -> WorkflowRegistry:
     registry = WorkflowRegistry()
     registry.register("citizen_brief", CitizenBriefWorkflow)
+    registry.register("weekend_weather_surf", WeekendWeatherSurfWorkflow)
     registry.register("surf_report", SurfReportWorkflow)
     registry.register("weather_report", WeatherReportWorkflow)
     return registry
@@ -35,6 +37,7 @@ class WorkflowRunner:
         llm_provider=None,
         email_provider=None,
         gmail_provider=None,
+        weekend_forecast_provider=None,
     ) -> None:
         self.settings = settings or AppSettings()
         self.registry = registry or create_default_registry()
@@ -44,6 +47,7 @@ class WorkflowRunner:
         self.llm_provider = llm_provider or DeepSeekProvider()
         self.email_provider = email_provider or GogEmailProvider()
         self.gmail_provider = gmail_provider or GmailContentProvider()
+        self.weekend_forecast_provider = weekend_forecast_provider or WeekendWeatherSurfProvider()
 
     def _default_catalog_path(self) -> Path:
         primary = resolve_project_path(self.settings.default_workflow_file)
@@ -77,6 +81,7 @@ class WorkflowRunner:
             llm_provider=self.llm_provider,
             email_provider=self.email_provider,
             gmail_provider=self.gmail_provider,
+            weekend_forecast_provider=self.weekend_forecast_provider,
         )
         result = workflow.run(ctx, dry_run=dry_run, skip_delivery=skip_delivery)
         (run_dir / "result.json").write_text(result.model_dump_json(indent=2), encoding="utf-8")

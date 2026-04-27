@@ -3,21 +3,52 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prompt Files</title>
+  <title>Prompt Library</title>
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
   <main class="shell">
-    <a class="back-link" href="/">Back</a>
-    <section class="panel">
-      <div class="panel-header">
-        <h1>Prompt Files</h1>
+    <div class="topbar">
+      <a class="back-link" href="/">All Workflows</a>
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">EW</span>
+        <span class="brand-name">Prompt Library</span>
       </div>
+    </div>
+
+    <header class="page-header">
+      <div class="page-header-text">
+        <p class="eyebrow">Prompts</p>
+        <h1>Prompt Library</h1>
+        <p>Editable prompt files used by configured workflows.</p>
+      </div>
+      <div class="page-stats">
+        <div class="stat">
+          <span class="stat-label">Files</span>
+          <span class="stat-value">{{ prompts|length }}</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Available Prompts</h2>
+      </div>
+      {% if prompts %}
       <div class="prompt-list">
         {% for prompt in prompts %}
-        <a class="prompt-item" href="/prompts/{{ prompt }}">{{ prompt }}</a>
+        <a class="prompt-item" href="/prompts/{{ prompt }}">
+          <div>
+            <strong>{{ prompt }}</strong>
+            <p>Open in the built-in editor</p>
+          </div>
+          <span class="prompt-action">Edit</span>
+        </a>
         {% endfor %}
       </div>
+      {% else %}
+      <p class="empty-state">No prompt files found.</p>
+      {% endif %}
     </section>
   </main>
 </body>

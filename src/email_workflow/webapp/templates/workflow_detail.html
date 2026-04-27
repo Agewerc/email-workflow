@@ -8,15 +8,133 @@
 </head>
 <body>
   <main class="shell">
-    <a class="back-link" href="/">Back</a>
-    <header class="hero compact">
-      <p class="eyebrow">{{ workflow.workflow_type }}</p>
-      <h1>{{ workflow.name }}</h1>
-      <p>{{ workflow.description }}</p>
+    <div class="topbar">
+      <a class="back-link" href="/">All Workflows</a>
+      <div class="topbar-actions">
+        <a class="button-link" href="/prompts/">Prompt Library</a>
+      </div>
+    </div>
+
+    <header class="page-header">
+      <div class="page-header-text">
+        <p class="eyebrow">{{ workflow.workflow_type }}</p>
+        <h1>{{ workflow.name }}</h1>
+        <p>{{ workflow.description }}</p>
+        {% if workflow.tags %}
+        <div class="tag-row" style="margin-top: 12px;">
+          {% for tag in workflow.tags %}
+          <span class="tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+      <div class="page-stats">
+        <div class="stat">
+          <span class="stat-label">Status</span>
+          <span class="stat-value" style="font-size: 1rem;">
+            <span class="status-badge {{ 'enabled' if workflow.enabled else 'disabled' }}">
+              {{ 'Enabled' if workflow.enabled else 'Paused' }}
+            </span>
+          </span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Prompts</span>
+          <span class="stat-value">{{ prompt_entries|length }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Config blocks</span>
+          <span class="stat-value">{{ config_blocks|length }}</span>
+        </div>
+      </div>
     </header>
-    <section class="panel">
-      <h2>Definition</h2>
-      <pre>{{ config_json }}</pre>
+
+    <div class="detail-grid">
+      <section class="panel">
+        <div class="section-header">
+          <h2>Overview</h2>
+        </div>
+        <dl class="definition-grid">
+          <div>
+            <dt>Workflow ID</dt>
+            <dd>{{ workflow.id }}</dd>
+          </div>
+          <div>
+            <dt>Workflow Type</dt>
+            <dd>{{ workflow.workflow_type }}</dd>
+          </div>
+          <div>
+            <dt>Frequency</dt>
+            <dd>{{ workflow.frequency }}</dd>
+          </div>
+          <div>
+            <dt>Managed By</dt>
+            <dd>OpenClaw</dd>
+          </div>
+        </dl>
+
+        {% if summary_items %}
+        <div class="summary-grid">
+          {% for item in summary_items %}
+          <div class="summary-card">
+            <span>{{ item.label }}</span>
+            <strong>{{ item.value }}</strong>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </section>
+
+      <section class="panel">
+        <div class="section-header">
+          <h2>Prompt Assets</h2>
+        </div>
+        {% if prompt_entries %}
+        <div class="prompt-list">
+          {% for prompt in prompt_entries %}
+          <div class="prompt-item">
+            <div>
+              <strong>{{ prompt.role }}</strong>
+              <p>{{ prompt.path }}</p>
+            </div>
+            {% if prompt.href %}
+            <a class="prompt-action" href="{{ prompt.href }}">Edit</a>
+            {% else %}
+            <span class="muted-note">Not in /config/prompts</span>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-state">No prompt files are mapped for this workflow.</p>
+        {% endif %}
+      </section>
+    </div>
+
+    {% if config_blocks %}
+    <section class="section">
+      <div class="section-header">
+        <h2>Configuration</h2>
+        <p>Structured config blocks from the workflow definition.</p>
+      </div>
+      <div class="config-grid">
+        {% for block in config_blocks %}
+        <article class="config-card">
+          <h3>{{ block.label }}</h3>
+          <pre>{{ block.value }}</pre>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Source Definition</h2>
+      </div>
+      <details class="code-disclosure">
+        <summary>Raw definition JSON</summary>
+        <pre>{{ config_json }}</pre>
+      </details>
     </section>
   </main>
 </body>

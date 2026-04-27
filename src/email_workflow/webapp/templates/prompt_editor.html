@@ -8,15 +8,28 @@
 </head>
 <body>
   <main class="shell">
-    <a class="back-link" href="/prompts/">Back</a>
-    <section class="panel">
-      <div class="panel-header">
-        <h1>{{ prompt_name }}</h1>
+    <div class="topbar">
+      <a class="back-link" href="/prompts/">Prompt Library</a>
+      <div class="topbar-actions">
+        <a class="button-link" href="/">Workflows</a>
       </div>
-      <form method="post" class="prompt-form">
-        <textarea name="content">{{ content }}</textarea>
-        <button type="submit">Save Prompt</button>
-      </form>
+    </div>
+
+    <header class="page-header">
+      <div class="page-header-text">
+        <p class="eyebrow">Prompt Editor</p>
+        <h1>{{ prompt_name }}</h1>
+        <p>Edit the prompt source and save changes back to <code>/config/prompts</code>.</p>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="panel">
+        <form method="post" class="prompt-form">
+          <textarea name="content">{{ content }}</textarea>
+          <button type="submit">Save prompt</button>
+        </form>
+      </div>
     </section>
   </main>
 </body>

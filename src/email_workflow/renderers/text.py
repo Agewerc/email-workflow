@@ -3,11 +3,18 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from jinja2 import Environment, FileSystemLoader
 
 from email_workflow.schemas import SectionContent
 from email_workflow.renderers.html import SECTION_ICONS
+
+
+def render_text_template(template_path: Path, **context: Any) -> str:
+    env = Environment(loader=FileSystemLoader(template_path.parent), trim_blocks=True, lstrip_blocks=True)
+    template = env.get_template(template_path.name)
+    return template.render(**context)
 
 
 def render_digest_text(
@@ -18,9 +25,8 @@ def render_digest_text(
     footer_label: str,
     sections: list[SectionContent],
 ) -> str:
-    env = Environment(loader=FileSystemLoader(template_path.parent), trim_blocks=True, lstrip_blocks=True)
-    template = env.get_template(template_path.name)
-    return template.render(
+    return render_text_template(
+        template_path,
         subject=subject,
         date_label=date_label,
         footer_label=footer_label,

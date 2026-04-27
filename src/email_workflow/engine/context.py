@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from email_workflow.providers.content.gmail import GmailContentProvider
     from email_workflow.providers.email.base import EmailProvider
     from email_workflow.providers.llm.base import LLMProvider
+    from email_workflow.providers.signals.weekend_weather_surf import WeekendWeatherSurfProvider
 
 
 @dataclass(slots=True)
@@ -25,6 +26,7 @@ class WorkflowContext:
     llm_provider: "LLMProvider"
     email_provider: "EmailProvider"
     gmail_provider: "GmailContentProvider"
+    weekend_forecast_provider: "WeekendWeatherSurfProvider"
     artifacts: dict[str, Path] = field(default_factory=dict)
 
     def artifact_path(self, name: str) -> Path:

@@ -41,6 +41,7 @@ workflows:
   - id: citizen-brief
     workflow_type: citizen_brief
     enabled: true
+    frequency: "2026-01-01T09:00:00+08:00"
     name: Citizen Brief
     description: test
     config:

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
@@ -18,6 +19,17 @@ SECTION_ICONS = {
 }
 
 
+def render_html_template(template_path: Path, **context: Any) -> str:
+    env = Environment(
+        loader=FileSystemLoader(template_path.parent),
+        autoescape=select_autoescape(enabled_extensions=("html", "j2")),
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
+    template = env.get_template(template_path.name)
+    return template.render(**context)
+
+
 def render_digest_html(
     template_path: Path,
     *,
@@ -27,14 +39,8 @@ def render_digest_html(
     footer_label: str,
     sections: list[SectionContent],
 ) -> str:
-    env = Environment(
-        loader=FileSystemLoader(template_path.parent),
-        autoescape=select_autoescape(enabled_extensions=("html", "j2")),
-        trim_blocks=True,
-        lstrip_blocks=True,
-    )
-    template = env.get_template(template_path.name)
-    return template.render(
+    return render_html_template(
+        template_path,
         subject=subject,
         heading=heading,
         date_label=date_label,

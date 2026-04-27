@@ -3,30 +3,84 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Email Workflow Admin</title>
+  <title>Workflow Control Center</title>
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
   <main class="shell">
-    <header class="hero">
-      <p class="eyebrow">Admin Surface</p>
-      <h1>Email Workflow Platform</h1>
-      <p>Inspect configured workflows and manage prompt assets.</p>
-    </header>
-    <section class="panel">
-      <div class="panel-header">
-        <h2>Workflows</h2>
-        <a href="/prompts/">Prompt Files</a>
+    <div class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">EW</span>
+        <span class="brand-name">Email Workflow Admin</span>
       </div>
+      <div class="topbar-actions">
+        <a class="button-link" href="/prompts/">Prompt Library</a>
+      </div>
+    </div>
+
+    <header class="page-header">
+      <div class="page-header-text">
+        <p class="eyebrow">Operations</p>
+        <h1>Workflow Control Center</h1>
+        <p>Inspect configured workflows, review scheduling metadata, and jump into prompt assets.</p>
+      </div>
+      <div class="page-stats">
+        <div class="stat">
+          <span class="stat-label">Workflows</span>
+          <span class="stat-value">{{ workflow_count }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Enabled</span>
+          <span class="stat-value">{{ enabled_count }}</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Configured Workflows</h2>
+        <p>Click any workflow to view its prompts, config, and source.</p>
+      </div>
+
+      {% if workflows %}
       <div class="workflow-grid">
         {% for workflow in workflows %}
         <a class="workflow-card" href="/workflows/{{ workflow.id }}">
+          <div class="workflow-card-top">
+            <span class="workflow-type">{{ workflow.workflow_type }}</span>
+            <span class="status-badge {{ 'enabled' if workflow.enabled else 'disabled' }}">
+              {{ 'Enabled' if workflow.enabled else 'Paused' }}
+            </span>
+          </div>
           <h3>{{ workflow.name }}</h3>
           <p>{{ workflow.description }}</p>
-          <span>{{ workflow.workflow_type }}</span>
+          <dl class="workflow-meta">
+            <div>
+              <dt>ID</dt>
+              <dd>{{ workflow.id }}</dd>
+            </div>
+            <div>
+              <dt>Frequency</dt>
+              <dd>{{ workflow.frequency }}</dd>
+            </div>
+          </dl>
+          {% if workflow.tags %}
+          <div class="tag-row">
+            {% for tag in workflow.tags %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          {% endif %}
+          <div class="workflow-card-footer">
+            <span>View workflow</span>
+            <strong>Open →</strong>
+          </div>
         </a>
         {% endfor %}
       </div>
+      {% else %}
+      <p class="empty-state">No workflows are configured yet.</p>
+      {% endif %}
     </section>
   </main>
 </body>

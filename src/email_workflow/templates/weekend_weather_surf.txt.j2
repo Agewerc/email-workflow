@@ -1,0 +1,40 @@
+{{ subject }}
+Beach: {{ forecast.beach_name }}
+Generated: {{ forecast.generated_at }}
+Best day: {{ forecast.best_day }}
+Best window: {{ forecast.best_window }}
+Schedule: {{ forecast.schedule_note }}
+============================================================
+
+Quick outlook:
+{% for item in forecast.summary -%}
+- {{ item }}
+{% endfor %}
+
+Practical note:
+{{ forecast.practical_note }}
+
+{% for day in forecast.days -%}
+[ {{ day.label.upper() }} ]
+Weather: {{ day.weather_desc }} · {{ "%.0f"|format(day.tmin_c) }}-{{ "%.0f"|format(day.tmax_c) }}°C
+Surf: {{ day.surf_rating_label }}{% if day.surf_rating_avg is not none %} ({{ "%.1f"|format(day.surf_rating_avg) }}/5){% endif %}
+Wave/Swell: {{ "%.1f"|format(day.wave_height_m) }}m wave, {{ "%.1f"|format(day.swell_height_m) }}m @ {{ "%.1f"|format(day.swell_period_s) }}s
+Wind max: {{ "%.0f"|format(day.wind_max_day_kmh) }} km/h
+Rain chance: {{ "%.0f"|format(day.rain_probability_day) }}%
+{% if day.morning -%}
+Morning: wind avg {{ "%.0f"|format(day.morning.wind_avg_kmh) }} km/h (max {{ "%.0f"|format(day.morning.wind_max_kmh) }}), rain up to {{ "%.0f"|format(day.morning.rain_probability_max) }}% ({{ "%.1f"|format(day.morning.rain_mm) }} mm)
+{% endif -%}
+{% if day.afternoon -%}
+Afternoon: wind avg {{ "%.0f"|format(day.afternoon.wind_avg_kmh) }} km/h (max {{ "%.0f"|format(day.afternoon.wind_max_kmh) }}), rain up to {{ "%.0f"|format(day.afternoon.rain_probability_max) }}% ({{ "%.1f"|format(day.afternoon.rain_mm) }} mm)
+{% endif -%}
+Surfline slots:
+{% for slot in day.surf_slots -%}
+- {{ "%02d"|format(slot.hour) }}:00 {{ "n/a" if slot.rating is none else "%.0f/5"|format(slot.rating) }}
+{% endfor -%}
+Worth surfing? {{ day.practical_note }}
+
+{% endfor -%}
+Sources:
+{% for note in forecast.source_notes -%}
+- {{ note }}
+{% endfor -%}

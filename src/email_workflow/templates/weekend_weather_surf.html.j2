@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ subject }}</title>
+</head>
+<body style="margin:0;padding:0;background:#eef4f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#163041;">
+  <div style="max-width:760px;margin:0 auto;padding:24px 16px 40px;">
+    <div style="background:linear-gradient(140deg,#0a4a69,#1481a8 55%,#7bdff2);color:#f7fdff;padding:26px 28px;border-radius:22px;box-shadow:0 16px 32px rgba(10,74,105,0.22);">
+      <div style="font-size:12px;letter-spacing:0.18em;text-transform:uppercase;opacity:0.82;">Weekend Weather + Surf</div>
+      <h1 style="margin:12px 0 8px;font-size:30px;line-height:1.12;">🏄 {{ forecast.beach_name }}</h1>
+      <p style="margin:0 0 12px;font-size:16px;opacity:0.92;">{{ forecast.headline }}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <span style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.24);padding:8px 12px;border-radius:999px;font-size:13px;">Best window: {{ forecast.best_window }}</span>
+        <span style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.24);padding:8px 12px;border-radius:999px;font-size:13px;">Schedule: {{ forecast.schedule_note }}</span>
+      </div>
+    </div>
+
+    <section style="background:#ffffff;border:1px solid #d7e3ea;border-radius:18px;padding:20px 22px;margin-top:16px;box-shadow:0 8px 20px rgba(22,48,65,0.08);">
+      <h2 style="margin:0 0 12px;font-size:18px;color:#0a4a69;">Quick outlook</h2>
+      <ul style="margin:0;padding-left:20px;color:#284656;line-height:1.6;">
+        {% for item in forecast.summary %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <p style="margin:14px 0 0;color:#284656;line-height:1.6;"><b>Practical note:</b> {{ forecast.practical_note }}</p>
+    </section>
+
+    {% for day in forecast.days %}
+    <section style="background:#ffffff;border:1px solid #d7e3ea;border-radius:18px;padding:20px 22px;margin-top:16px;box-shadow:0 8px 20px rgba(22,48,65,0.08);">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;">
+        <div>
+          <h2 style="margin:0 0 6px;font-size:20px;color:#0a4a69;">{{ "🌤️" if loop.index == 1 else "🌊" }} {{ day.label }}</h2>
+          <p style="margin:0;color:#587282;">{{ day.weather_desc }} · {{ "%.0f"|format(day.tmin_c) }}-{{ "%.0f"|format(day.tmax_c) }}°C</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="background:#d6f4de;color:#0e6245;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;">Surf: {{ day.surf_rating_label }}</span>
+          <span style="background:#e0f2fe;color:#075985;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;">Wave {{ "%.1f"|format(day.wave_height_m) }}m</span>
+          <span style="background:#fef3c7;color:#92400e;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;">Wind max {{ "%.0f"|format(day.wind_max_day_kmh) }} km/h</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px;">
+        <div style="background:#f8fbfd;border:1px solid #dce8ef;border-radius:14px;padding:14px;">
+          <h3 style="margin:0 0 8px;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:#1481a8;">Morning</h3>
+          {% if day.morning %}
+          <p style="margin:0 0 6px;color:#284656;">Wind avg {{ "%.0f"|format(day.morning.wind_avg_kmh) }} km/h, max {{ "%.0f"|format(day.morning.wind_max_kmh) }} km/h</p>
+          <p style="margin:0;color:#284656;">Rain up to {{ "%.0f"|format(day.morning.rain_probability_max) }}% ({{ "%.1f"|format(day.morning.rain_mm) }} mm)</p>
+          {% else %}
+          <p style="margin:0;color:#587282;">Morning breakdown unavailable.</p>
+          {% endif %}
+        </div>
+        <div style="background:#f8fbfd;border:1px solid #dce8ef;border-radius:14px;padding:14px;">
+          <h3 style="margin:0 0 8px;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;color:#1481a8;">Afternoon</h3>
+          {% if day.afternoon %}
+          <p style="margin:0 0 6px;color:#284656;">Wind avg {{ "%.0f"|format(day.afternoon.wind_avg_kmh) }} km/h, max {{ "%.0f"|format(day.afternoon.wind_max_kmh) }} km/h</p>
+          <p style="margin:0;color:#284656;">Rain up to {{ "%.0f"|format(day.afternoon.rain_probability_max) }}% ({{ "%.1f"|format(day.afternoon.rain_mm) }} mm)</p>
+          {% else %}
+          <p style="margin:0;color:#587282;">Afternoon breakdown unavailable.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="margin-top:14px;background:#f4fbff;border:1px solid #d4edf7;border-radius:14px;padding:14px;">
+        <p style="margin:0 0 8px;font-size:14px;font-weight:700;color:#0a4a69;">Surf detail</p>
+        <p style="margin:0 0 8px;color:#284656;">Swell {{ "%.1f"|format(day.swell_height_m) }}m @ {{ "%.1f"|format(day.swell_period_s) }}s</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          {% for slot in day.surf_slots %}
+          <span style="background:#e8eefc;border:1px solid #cad5fb;color:#213a7a;padding:5px 9px;border-radius:999px;font-size:12px;"><b>{{ "%02d"|format(slot.hour) }}:00</b> {{ "n/a" if slot.rating is none else "%.0f/5"|format(slot.rating) }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <p style="margin:14px 0 0;color:#284656;line-height:1.6;"><b>Worth surfing?</b> {{ day.practical_note }}</p>
+    </section>
+    {% endfor %}
+
+    <section style="background:#ffffff;border:1px solid #d7e3ea;border-radius:18px;padding:18px 22px;margin-top:16px;box-shadow:0 8px 20px rgba(22,48,65,0.08);">
+      <h2 style="margin:0 0 10px;font-size:16px;color:#0a4a69;">Sources</h2>
+      <ul style="margin:0;padding-left:20px;color:#587282;line-height:1.6;">
+        {% for note in forecast.source_notes %}
+        <li>{{ note }}</li>
+        {% endfor %}
+        <li>Generated: {{ forecast.generated_at }}</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

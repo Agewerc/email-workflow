@@ -22,10 +22,7 @@ def main() -> None:
     """Run and inspect email workflows."""
 
 
-@main.command("list-workflows")
-def list_workflows() -> None:
-    """List configured workflows."""
-
+def _render_workflow_table() -> None:
     runner = WorkflowRunner()
     table = Table(title="Configured Workflows")
     table.add_column("ID")
@@ -35,6 +32,20 @@ def list_workflows() -> None:
     for workflow in runner.list_workflows():
         table.add_row(workflow.id, workflow.workflow_type, str(workflow.enabled), workflow.description)
     console.print(table)
+
+
+@main.command("list-workflows")
+def list_workflows() -> None:
+    """List configured workflows."""
+
+    _render_workflow_table()
+
+
+@main.command("list")
+def list_command() -> None:
+    """List configured workflows."""
+
+    _render_workflow_table()
 
 
 @main.command("run")
@@ -63,3 +74,7 @@ def run_web(host: str | None, port: int | None) -> None:
     app_host = host or settings.webapp_host
     app_port = port or settings.webapp_port
     uvicorn.run("email_workflow.webapp.app:create_app", host=app_host, port=app_port, reload=settings.webapp_reload, factory=True)
+
+
+if __name__ == "__main__":
+    main()

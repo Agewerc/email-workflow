@@ -7,6 +7,7 @@ The first concrete workflow in this repo is **Citizen Brief**, a daily email tha
 ## Current scope
 
 - `CitizenBriefWorkflow` as the first fully wired workflow
+- `WeekendWeatherSurfWorkflow` for reusable beach-based weekend surf/weather outlooks
 - file-backed workflow catalog in `config/workflows.example.yaml`
 - prompt assets in `config/prompts/`
 - reusable providers for Gmail content, LLM access, and Gmail delivery

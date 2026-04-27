@@ -61,10 +61,36 @@ class CitizenBriefWorkflowConfig(BaseModel):
     template_text: str = "templates/digest.txt.j2"
 
 
+class BeachConfig(BaseModel):
+    slug: str
+    name: str
+    latitude: float
+    longitude: float
+    surfline_spot_id: str | None = None
+
+
+class WeekendWeatherSurfWorkflowConfig(BaseModel):
+    workflow_type: Literal["weekend_weather_surf"] = "weekend_weather_surf"
+    email_account: str = "alangewerc@gmail.com"
+    email_to: str
+    email_subject: str = "Weekend Weather + Surf Forecast"
+    beach: BeachConfig
+    timezone: str = "Australia/Perth"
+    forecast_days: int = 8
+    schedule_day: str = "Thursday"
+    schedule_time: str = "18:00"
+    schedule_timezone: str = "Australia/Perth"
+    weather_source_label: str = "Open-Meteo"
+    surf_source_label: str = "Surfline"
+    template_html: str = "src/email_workflow/templates/weekend_weather_surf.html.j2"
+    template_text: str = "src/email_workflow/templates/weekend_weather_surf.txt.j2"
+
+
 class WorkflowDefinition(BaseModel):
     id: str
     workflow_type: str
     enabled: bool = True
+    frequency: str = "2026-01-01T09:00:00+08:00"
     name: str
     description: str = ""
     tags: list[str] = Field(default_factory=list)

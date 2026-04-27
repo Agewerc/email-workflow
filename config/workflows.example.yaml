@@ -2,6 +2,7 @@ workflows:
   - id: citizen-brief
     workflow_type: citizen_brief
     enabled: true
+    frequency: "2026-01-01T09:00:00+08:00"
     name: Citizen Brief
     description: Daily intelligence briefing synthesized from Gmail newsletters and inbox activity.
     tags:
@@ -56,3 +57,32 @@ workflows:
         editor: config/prompts/citizen_brief_editor.txt
       template_html: src/email_workflow/templates/digest.html.j2
       template_text: src/email_workflow/templates/digest.txt.j2
+  - id: weekend-weather-surf-trigg
+    workflow_type: weekend_weather_surf
+    enabled: true
+    frequency: "2026-01-04T18:00:00+08:00"
+    name: Weekend Weather + Surf (Trigg)
+    description: Thursday evening weekend surf and weather outlook for Trigg Beach.
+    tags:
+      - weather
+      - surf
+      - perth
+    config:
+      email_account: alangewerc@gmail.com
+      email_to: alangewerc@gmail.com
+      email_subject: "Weekend Weather + Surf Forecast — Trigg"
+      beach:
+        slug: trigg
+        name: Trigg Beach
+        latitude: -31.870
+        longitude: 115.756
+        surfline_spot_id: "584204204e65fad6a7709268"
+      timezone: Australia/Perth
+      forecast_days: 8
+      schedule_day: Thursday
+      schedule_time: "18:00"
+      schedule_timezone: Australia/Perth
+      weather_source_label: Open-Meteo
+      surf_source_label: Surfline
+      template_html: src/email_workflow/templates/weekend_weather_surf.html.j2
+      template_text: src/email_workflow/templates/weekend_weather_surf.txt.j2

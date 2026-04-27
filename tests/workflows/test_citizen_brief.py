@@ -27,6 +27,10 @@ class DummyGmailProvider:
         )
 
 
+class DummyWeekendForecastProvider:
+    pass
+
+
 def test_citizen_brief_render_creates_email_artifacts(tmp_path: Path) -> None:
     definition = WorkflowDefinition(
         id="citizen-brief",
@@ -59,6 +63,7 @@ def test_citizen_brief_render_creates_email_artifacts(tmp_path: Path) -> None:
         llm_provider=DummyLLMProvider(),
         email_provider=DummyEmailProvider(),
         gmail_provider=DummyGmailProvider(),
+        weekend_forecast_provider=DummyWeekendForecastProvider(),
     )
     workflow = CitizenBriefWorkflow()
     result = workflow.run(ctx, dry_run=True)
