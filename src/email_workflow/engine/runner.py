@@ -17,6 +17,7 @@ from email_workflow.utils.files import ensure_directory, project_root, resolve_p
 from email_workflow.workflows import (
     CitizenBriefWorkflow,
     JobAlertDigestWorkflow,
+    JobAlertWholePoolExperimentWorkflow,
     ProfGInsightsWorkflow,
     WeekendWeatherSurfWorkflow,
     SurfReportWorkflow,
@@ -28,6 +29,7 @@ def create_default_registry() -> WorkflowRegistry:
     registry = WorkflowRegistry()
     registry.register("citizen_brief", CitizenBriefWorkflow)
     registry.register("job_alert_digest", JobAlertDigestWorkflow)
+    registry.register("job_alert_whole_pool_experiment", JobAlertWholePoolExperimentWorkflow)
     registry.register("prof_g_insights", ProfGInsightsWorkflow)
     registry.register("weekend_weather_surf", WeekendWeatherSurfWorkflow)
     registry.register("surf_report", SurfReportWorkflow)

@@ -62,7 +62,7 @@ class CitizenBriefWorkflowConfig(BaseModel):
 
 
 class JobAlertDigestWorkflowConfig(BaseModel):
-    workflow_type: Literal["job_alert_digest"] = "job_alert_digest"
+    workflow_type: Literal["job_alert_digest", "job_alert_whole_pool_experiment"] = "job_alert_digest"
     email_account: str = "alangewerc@gmail.com"
     email_to: str
     email_subject: str = "Job Alert Digest"
