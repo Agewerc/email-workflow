@@ -6,6 +6,7 @@ import json
 
 import click
 import uvicorn
+from dotenv import load_dotenv
 from rich.console import Console
 from rich.table import Table
 
@@ -20,6 +21,8 @@ console = Console()
 @click.group()
 def main() -> None:
     """Run and inspect email workflows."""
+
+    load_dotenv(resolve_project_path(".env"), override=False)
 
 
 def _render_workflow_table() -> None:

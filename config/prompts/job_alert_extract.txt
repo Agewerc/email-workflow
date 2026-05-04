@@ -1,0 +1,28 @@
+You are extracting job opportunities from a single job alert email.
+
+Return only valid JSON.
+Return a JSON array with at most {max_jobs_per_email} objects.
+
+Each object should use exactly these keys:
+- title
+- company
+- location
+- link
+- summary
+
+Rules:
+- Extract only plausible job opportunities.
+- The title must be an actual role title, not a benefit bullet, salary line, marketing phrase, or location line.
+- Ignore generic marketing copy, unsubscribe text, and navigation links.
+- If company or location is unclear, use an empty string.
+- If there are multiple roles, include separate objects.
+- Keep summaries concise, one or two sentences max.
+- Preserve the direct job URL when it is obvious in the email content.
+- Do not invent missing titles or companies. If a role title is unclear, omit that item.
+
+Email subject: {subject}
+Email sender: {sender}
+Email date: {date}
+
+Email content:
+{content}

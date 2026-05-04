@@ -3,24 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ prompt_name }}</title>
+  <title>{{ request_title }}</title>
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
   <main class="shell">
     <div class="topbar">
-      <a class="back-link" href="/prompts/">Prompt Library</a>
+      <a class="back-link" href="/workflow-requests/">Workflow Requests</a>
       <div class="topbar-actions">
-        <a class="button-link" href="/workflow-requests/">Workflow Requests</a>
         <a class="button-link" href="/">Workflows</a>
       </div>
     </div>
 
     <header class="page-header">
       <div class="page-header-text">
-        <p class="eyebrow">Prompt Editor</p>
-        <h1>{{ prompt_name }}</h1>
-        <p>Edit the prompt source and save changes back to <code>/config/prompts</code>.</p>
+        <p class="eyebrow">Workflow Request</p>
+        <h1>{{ request_title }}</h1>
+        <p>Write the future workflow instructions here. Later you can point me at this request and ask me to implement it.</p>
+      </div>
+      <div class="page-stats">
+        <div class="stat">
+          <span class="stat-label">File</span>
+          <span class="stat-value stat-value-small">{{ request_name }}</span>
+        </div>
       </div>
     </header>
 
@@ -28,7 +33,7 @@
       <div class="panel">
         <form method="post" class="prompt-form">
           <textarea name="content">{{ content }}</textarea>
-          <button type="submit">Save prompt</button>
+          <button type="submit">Save request</button>
         </form>
       </div>
     </section>

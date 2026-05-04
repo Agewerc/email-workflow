@@ -34,6 +34,9 @@ workflows:
         - name: Economics
           query: 'label:"Newsletter/Business.Economics" newer_than:1d'
           max_threads: 5
+        - name: Australia
+          query: 'label:"Newsletter/News" (Australia OR Australian) newer_than:1d'
+          max_threads: 4
         - name: Brazil
           query: 'label:"Newsletter/Brasil" newer_than:1d'
           max_threads: 4
@@ -86,3 +89,95 @@ workflows:
       surf_source_label: Surfline
       template_html: src/email_workflow/templates/weekend_weather_surf.html.j2
       template_text: src/email_workflow/templates/weekend_weather_surf.txt.j2
+  - id: job-alert-digest
+    workflow_type: job_alert_digest
+    enabled: true
+    frequency: "2026-01-01T08:00:00+08:00"
+    name: Job Alert Digest
+    description: Daily digest of high-fit job alerts sourced from Gmail.
+    tags:
+      - gmail
+      - jobs
+      - career
+    config:
+      email_account: alangewerc@gmail.com
+      email_to: alangewerc@gmail.com
+      email_subject: "Job Alert Digest"
+      model_provider: deepseek
+      models:
+        deepseek:
+          api_key_env: DEEPSEEK_API_KEY
+          base_url: https://api.deepseek.com/v1
+          model: deepseek-chat
+          cost_per_1m_input: 0.14
+          cost_per_1m_output: 0.28
+      gmail_query: 'label:"Work/job.alert" newer_than:1d'
+      max_threads: 20
+      body_max_chars: 6000
+      max_jobs_per_email: 5
+      max_digest_jobs: 10
+      min_digest_score: 55
+      profile_file: "/Users/alangewerc/Library/CloudStorage/GoogleDrive-alangewerc@gmail.com/My Drive/Career/master_cv.yaml"
+      inclusion_keywords:
+        - data science
+        - analytics
+        - ai
+        - machine learning
+        - operational intelligence
+      exclusion_keywords:
+        - graduate
+        - internship
+        - junior
+      target_functions:
+        - principal
+        - lead
+        - head of data
+        - head of analytics
+      target_industries:
+        - mining
+        - energy
+        - resources
+        - regulated
+      target_locations:
+        - perth
+        - australia
+        - remote
+      prompt_files:
+        extract: config/prompts/job_alert_extract.txt
+        score: config/prompts/job_alert_score.txt
+        editor: config/prompts/job_alert_editor.txt
+      template_html: src/email_workflow/templates/job_alert_digest.html.j2
+      template_text: src/email_workflow/templates/job_alert_digest.txt.j2
+  - id: prof-g-insights
+    workflow_type: prof_g_insights
+    enabled: true
+    frequency: "2026-05-02T15:00:00+08:00"
+    name: Prof G Weekly Insights
+    description: Weekly long-form insight report synthesized from emails in the Prof G newsletter label.
+    tags:
+      - gmail
+      - newsletter
+      - prof-g
+      - insights
+    config:
+      email_account: alangewerc@gmail.com
+      email_to: alangewerc@gmail.com
+      email_subject: "Weekly Prof G Insights"
+      model_provider: deepseek
+      models:
+        deepseek:
+          api_key_env: DEEPSEEK_API_KEY
+          base_url: https://api.deepseek.com/v1
+          model: deepseek-chat
+          cost_per_1m_input: 0.14
+          cost_per_1m_output: 0.28
+      gmail_query: "label:newsletter-prof-g newer_than:7d"
+      max_threads: 12
+      body_max_chars: 8000
+      max_insights: 5
+      llm_timeout_seconds: 60
+      llm_max_tokens: 3200
+      prompt_files:
+        synthesize: config/prompts/prof_g_insights_synthesize.txt
+      template_html: src/email_workflow/templates/digest.html.j2
+      template_text: src/email_workflow/templates/digest.txt.j2

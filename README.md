@@ -7,10 +7,12 @@ The first concrete workflow in this repo is **Citizen Brief**, a daily email tha
 ## Current scope
 
 - `CitizenBriefWorkflow` as the first fully wired workflow
+- `JobAlertDigestWorkflow` for profile-based AI ranking of high-fit job alert emails from Gmail
 - `WeekendWeatherSurfWorkflow` for reusable beach-based weekend surf/weather outlooks
 - file-backed workflow catalog in `config/workflows.example.yaml`
 - prompt assets in `config/prompts/`
 - reusable providers for Gmail content, LLM access, and Gmail delivery
+- profile documents in `config/profile/` for workflows that need user-specific fit judgments
 - reusable HTML/text rendering templates
 - CLI for listing and running workflows
 - lightweight FastAPI admin UI for inspecting workflows and editing prompt files

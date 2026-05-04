@@ -1,0 +1,30 @@
+You are producing Alan's weekly Prof G newsletter insight report.
+
+Read the emails below and extract up to {max_insights} relevant insights. This report can be detailed. Prefer fewer, stronger insights over a long list of weak observations.
+
+For each insight, write:
+- title: a specific, concise insight title.
+- conclusion: one substantial paragraph explaining the main conclusion and why it matters.
+- supporting_data_evidence: one substantial paragraph grounding the conclusion in specific evidence, examples, claims, numbers, named companies, people, or arguments from the emails. Mention which email subjects support it when useful.
+- considerations_watch_next: one substantial paragraph on what else to consider, implications, unresolved questions, or what to watch next.
+- source_emails: a list of email subjects used as evidence.
+
+Rules:
+- Use only the supplied emails as source material.
+- Do not invent statistics, facts, or claims that are not in the emails.
+- If the emails contain little useful content, return fewer insights.
+- Return only valid JSON. No markdown fences.
+
+Return this exact JSON shape:
+[
+  {{
+    "title": "Insight title",
+    "conclusion": "One paragraph.",
+    "supporting_data_evidence": "One paragraph.",
+    "considerations_watch_next": "One paragraph.",
+    "source_emails": ["Subject line"]
+  }}
+]
+
+Emails:
+{emails}

@@ -5,14 +5,16 @@ from .config import (
     BeachConfig,
     CitizenBriefWorkflowConfig,
     InboxSectionConfig,
+    JobAlertDigestWorkflowConfig,
     LLMModelConfig,
+    ProfGInsightsWorkflowConfig,
     WeekendWeatherSurfWorkflowConfig,
     SectionQueryConfig,
     WorkflowCatalog,
     WorkflowDefinition,
     load_workflow_catalog,
 )
-from .content import ContentItem, SectionContent, WorkflowContent
+from .content import ContentItem, InsightItem, JobOpportunity, SectionContent, WorkflowContent
 from .weather_surf import ForecastPeriodStats, SurfSlotForecast, WeekendDayForecast, WeekendForecast
 from .workflow import RenderedEmail, WorkflowMeta, WorkflowResult, WorkflowStatus
 
@@ -23,7 +25,11 @@ __all__ = [
     "ContentItem",
     "ForecastPeriodStats",
     "InboxSectionConfig",
+    "InsightItem",
+    "JobAlertDigestWorkflowConfig",
+    "JobOpportunity",
     "LLMModelConfig",
+    "ProfGInsightsWorkflowConfig",
     "RenderedEmail",
     "SectionContent",
     "SectionQueryConfig",

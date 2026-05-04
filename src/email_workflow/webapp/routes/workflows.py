@@ -82,6 +82,8 @@ def _config_blocks(config: dict[str, Any]) -> list[dict[str, str]]:
 def index(request: Request) -> HTMLResponse:
     runner = WorkflowRunner()
     workflows = runner.list_workflows()
+    request_dir = request.app.state.workflow_request_dir
+    request_count = len(list(request_dir.glob("*.md")))
     return request.app.state.templates.TemplateResponse(
         request,
         "index.html",
@@ -89,6 +91,7 @@ def index(request: Request) -> HTMLResponse:
             "workflows": workflows,
             "workflow_count": len(workflows),
             "enabled_count": sum(1 for workflow in workflows if workflow.enabled),
+            "request_count": request_count,
         },
     )
 

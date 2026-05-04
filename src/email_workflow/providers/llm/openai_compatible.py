@@ -28,7 +28,7 @@ class OpenAICompatibleProvider(LLMProvider):
             "model": model_cfg.model,
             "messages": [{"role": "user", "content": prompt}],
             "temperature": 0.3,
-            "max_tokens": 700,
+            "max_tokens": getattr(config, "llm_max_tokens", 700),
         }
         headers = {"Authorization": f"Bearer {api_key}"}
         url = model_cfg.base_url.rstrip("/") + "/chat/completions"

@@ -14,6 +14,7 @@
         <span class="brand-name">Email Workflow Admin</span>
       </div>
       <div class="topbar-actions">
+        <a class="button-link" href="/workflow-requests/">Workflow Requests</a>
         <a class="button-link" href="/prompts/">Prompt Library</a>
       </div>
     </div>
@@ -32,6 +33,10 @@
         <div class="stat">
           <span class="stat-label">Enabled</span>
           <span class="stat-value">{{ enabled_count }}</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Requests</span>
+          <span class="stat-value">{{ request_count }}</span>
         </div>
       </div>
     </header>
@@ -81,6 +86,20 @@
       {% else %}
       <p class="empty-state">No workflows are configured yet.</p>
       {% endif %}
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Future Workflow Planning</h2>
+        <p>Write future workflow requirements in the request backlog, then later ask me to implement one of them.</p>
+      </div>
+      <div class="panel inline-panel">
+        <div>
+          <strong class="inline-panel-title">Workflow requests backlog</strong>
+          <p class="inline-panel-copy">Use the request editor to describe the workflow, schedule, inputs, outputs, and any implementation rules you want me to follow.</p>
+        </div>
+        <a class="button-link primary" href="/workflow-requests/">Open requests</a>
+      </div>
     </section>
   </main>
 </body>

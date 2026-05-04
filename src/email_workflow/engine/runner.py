@@ -14,12 +14,21 @@ from email_workflow.providers.signals.weekend_weather_surf import WeekendWeather
 from email_workflow.schemas import AppSettings, WorkflowCatalog, load_workflow_catalog
 from email_workflow.utils.dates import timestamp_slug
 from email_workflow.utils.files import ensure_directory, project_root, resolve_project_path
-from email_workflow.workflows import CitizenBriefWorkflow, WeekendWeatherSurfWorkflow, SurfReportWorkflow, WeatherReportWorkflow
+from email_workflow.workflows import (
+    CitizenBriefWorkflow,
+    JobAlertDigestWorkflow,
+    ProfGInsightsWorkflow,
+    WeekendWeatherSurfWorkflow,
+    SurfReportWorkflow,
+    WeatherReportWorkflow,
+)
 
 
 def create_default_registry() -> WorkflowRegistry:
     registry = WorkflowRegistry()
     registry.register("citizen_brief", CitizenBriefWorkflow)
+    registry.register("job_alert_digest", JobAlertDigestWorkflow)
+    registry.register("prof_g_insights", ProfGInsightsWorkflow)
     registry.register("weekend_weather_surf", WeekendWeatherSurfWorkflow)
     registry.register("surf_report", SurfReportWorkflow)
     registry.register("weather_report", WeatherReportWorkflow)

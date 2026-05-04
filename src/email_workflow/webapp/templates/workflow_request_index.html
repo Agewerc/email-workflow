@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workflow Requests</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <div class="topbar">
+      <a class="back-link" href="/">All Workflows</a>
+      <div class="topbar-actions">
+        <a class="button-link" href="/prompts/">Prompt Library</a>
+      </div>
+    </div>
+
+    <header class="page-header">
+      <div class="page-header-text">
+        <p class="eyebrow">Planning</p>
+        <h1>Workflow Requests</h1>
+        <p>Capture future workflow ideas and implementation instructions here, then ask me later to build one from this backlog.</p>
+      </div>
+      <div class="page-stats">
+        <div class="stat">
+          <span class="stat-label">Requests</span>
+          <span class="stat-value">{{ request_count }}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="detail-grid planning-grid">
+      <section class="panel">
+        <div class="section-header">
+          <h2>Create Request</h2>
+          <p>Start with a title. Leave the instructions blank and the editor template will be generated for you.</p>
+        </div>
+        <form method="post" action="/workflow-requests/new" class="stack-form">
+          <div class="field-group">
+            <label for="title">Workflow title</label>
+            <input id="title" name="title" type="text" placeholder="Weekly startup funding digest" required />
+          </div>
+          <div class="field-group">
+            <label for="content">Initial instructions</label>
+            <textarea id="content" name="content" placeholder="Optional. If you leave this blank, the app creates a structured template for you."></textarea>
+          </div>
+          <button type="submit">Create workflow request</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="section-header">
+          <h2>Saved Requests</h2>
+          <p>Open an existing request to refine the instructions before asking me to implement it.</p>
+        </div>
+        {% if workflow_requests %}
+        <div class="prompt-list">
+          {% for item in workflow_requests %}
+          <a class="prompt-item" href="{{ item.href }}">
+            <div>
+              <strong>{{ item.title }}</strong>
+              <p>{{ item.name }} · updated {{ item.updated_at }}</p>
+            </div>
+            <span class="prompt-action">Open</span>
+          </a>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p class="empty-state">No future workflow requests yet. Create one here and use it as the implementation brief later.</p>
+        {% endif %}
+      </section>
+    </div>
+  </main>
+</body>
+</html>

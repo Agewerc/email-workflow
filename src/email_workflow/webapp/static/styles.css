@@ -288,6 +288,26 @@ p {
   margin-top: 16px;
 }
 
+.inline-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.inline-panel-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.inline-panel-copy {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
 /* ------------------------------------------------------------------
    Workflow grid (home page)
    ------------------------------------------------------------------ */
@@ -457,6 +477,10 @@ p {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px;
   margin-top: 16px;
+}
+
+.planning-grid {
+  align-items: start;
 }
 
 .definition-grid {
@@ -644,6 +668,24 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
 }
 
+input[type="text"] {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
 .code-disclosure {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -695,6 +737,23 @@ textarea:focus {
   margin-top: 12px;
 }
 
+.stack-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.field-group {
+  display: grid;
+  gap: 6px;
+}
+
+.field-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
 .prompt-form button {
   margin-top: 14px;
   height: 38px;
@@ -729,6 +788,11 @@ textarea:focus {
 
   .page-stats {
     width: 100%;
+  }
+
+  .inline-panel,
+  .topbar-actions {
+    flex-wrap: wrap;
   }
 
   .stat {

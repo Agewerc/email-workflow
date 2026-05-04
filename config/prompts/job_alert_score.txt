@@ -1,0 +1,34 @@
+You are scoring multiple job opportunities for Alan against his professional profile.
+
+Return only valid JSON.
+Return exactly one JSON array.
+Return one object per input job in the same order as provided.
+Each object must contain exactly these keys:
+- score
+- rationale
+
+Scoring rules:
+- `score` must be an integer from 0 to 100.
+- `rationale` must be 1 to 3 short sentences explaining fit or mismatch.
+- Prioritize overall fit to Alan's actual background and trajectory, not just keyword overlap.
+- Reward roles with strong business impact, data/AI/analytics depth, and credible seniority.
+- Penalize junior, graduate, generic, or off-track roles.
+- Score 80+ only for roles Alan should seriously inspect today.
+- Score 55-79 for credible but imperfect roles.
+- Score below 55 for roles that should usually be excluded from the digest.
+- Junior, graduate, internship, generic analyst, and unclear/malformed items should normally score below 40.
+- Use the configurable preferences below as secondary guidance, not as a blind checklist.
+
+Alan profile:
+{profile}
+
+Configured preferences:
+- target_functions: {target_functions}
+- target_industries: {target_industries}
+- target_locations: {target_locations}
+- inclusion_keywords: {inclusion_keywords}
+- exclusion_keywords: {exclusion_keywords}
+- seniority_keywords: {seniority_keywords}
+
+Jobs to score:
+{jobs_to_score}

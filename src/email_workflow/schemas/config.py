@@ -61,6 +61,51 @@ class CitizenBriefWorkflowConfig(BaseModel):
     template_text: str = "templates/digest.txt.j2"
 
 
+class JobAlertDigestWorkflowConfig(BaseModel):
+    workflow_type: Literal["job_alert_digest"] = "job_alert_digest"
+    email_account: str = "alangewerc@gmail.com"
+    email_to: str
+    email_subject: str = "Job Alert Digest"
+    model_provider: str = "deepseek"
+    models: dict[str, LLMModelConfig] = Field(default_factory=dict)
+    gmail_query: str = 'label:"Jobs" newer_than:1d'
+    max_threads: int = 25
+    body_max_chars: int = 6000
+    max_jobs_per_email: int = 6
+    max_digest_jobs: int = 12
+    min_digest_score: int = 55
+    profile_file: str = "config/profile/alan_job_profile.md"
+    inclusion_keywords: list[str] = Field(default_factory=list)
+    exclusion_keywords: list[str] = Field(default_factory=list)
+    target_functions: list[str] = Field(default_factory=list)
+    target_industries: list[str] = Field(default_factory=list)
+    target_locations: list[str] = Field(default_factory=list)
+    seniority_keywords: list[str] = Field(default_factory=list)
+    prompt_files: dict[str, str] = Field(default_factory=dict)
+    llm_score_fallback_to_rules: bool = True
+    llm_timeout_seconds: int = 30
+    template_html: str = "src/email_workflow/templates/job_alert_digest.html.j2"
+    template_text: str = "src/email_workflow/templates/job_alert_digest.txt.j2"
+
+
+class ProfGInsightsWorkflowConfig(BaseModel):
+    workflow_type: Literal["prof_g_insights"] = "prof_g_insights"
+    email_account: str = "alangewerc@gmail.com"
+    email_to: str
+    email_subject: str = "Weekly Prof G Insights"
+    model_provider: str = "deepseek"
+    models: dict[str, LLMModelConfig] = Field(default_factory=dict)
+    gmail_query: str = "label:newsletter-prof-g newer_than:7d"
+    max_threads: int = 12
+    body_max_chars: int = 8000
+    max_insights: int = 5
+    llm_timeout_seconds: int = 60
+    llm_max_tokens: int = 3200
+    prompt_files: dict[str, str] = Field(default_factory=dict)
+    template_html: str = "src/email_workflow/templates/digest.html.j2"
+    template_text: str = "src/email_workflow/templates/digest.txt.j2"
+
+
 class BeachConfig(BaseModel):
     slug: str
     name: str

@@ -17,6 +17,31 @@ class ContentItem(BaseModel):
     metadata: dict[str, Any] = Field(default_factory=dict)
 
 
+class JobOpportunity(BaseModel):
+    """A normalized job opportunity extracted from one or more emails."""
+
+    title: str
+    company: str = ""
+    location: str = ""
+    link: str = ""
+    summary: str = ""
+    source_email: str = ""
+    relevance_reason: str = ""
+    score: int = 0
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
+class InsightItem(BaseModel):
+    """A synthesized strategic insight backed by source emails."""
+
+    title: str
+    conclusion: str
+    supporting_data_evidence: str
+    considerations_watch_next: str
+    source_emails: list[str] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
 class SectionContent(BaseModel):
     """Content grouped under a named section."""
 
