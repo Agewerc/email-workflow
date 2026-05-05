@@ -18,6 +18,7 @@ from email_workflow.workflows import (
     CitizenBriefWorkflow,
     JobAlertDigestWorkflow,
     JobAlertWholePoolExperimentWorkflow,
+    JobAlertSimpleReviewWorkflow,
     ProfGInsightsWorkflow,
     WeekendWeatherSurfWorkflow,
     SurfReportWorkflow,
@@ -30,6 +31,7 @@ def create_default_registry() -> WorkflowRegistry:
     registry.register("citizen_brief", CitizenBriefWorkflow)
     registry.register("job_alert_digest", JobAlertDigestWorkflow)
     registry.register("job_alert_whole_pool_experiment", JobAlertWholePoolExperimentWorkflow)
+    registry.register("job_alert_simple_review", JobAlertSimpleReviewWorkflow)
     registry.register("prof_g_insights", ProfGInsightsWorkflow)
     registry.register("weekend_weather_surf", WeekendWeatherSurfWorkflow)
     registry.register("surf_report", SurfReportWorkflow)

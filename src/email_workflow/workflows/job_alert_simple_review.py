@@ -1,10 +1,10 @@
-"""Experimental simple whole-pool LLM review for job alerts."""
+"""Simplified job alert whole-pool review workflow."""
 
 from __future__ import annotations
 
+import json
 from datetime import datetime
 from pathlib import Path
-import json
 
 from email_workflow.engine.context import WorkflowContext
 from email_workflow.schemas import JobAlertDigestWorkflowConfig, RenderedEmail, SectionContent, WorkflowContent, WorkflowMeta
@@ -12,8 +12,8 @@ from email_workflow.utils.files import resolve_project_path
 from email_workflow.workflows.job_alert_digest import JobAlertDigestWorkflow
 
 
-class JobAlertWholePoolExperimentWorkflow(JobAlertDigestWorkflow):
-    workflow_type = "job_alert_whole_pool_experiment"
+class JobAlertSimpleReviewWorkflow(JobAlertDigestWorkflow):
+    workflow_type = "job_alert_simple_review"
 
     def meta(self, ctx: WorkflowContext) -> WorkflowMeta:
         return WorkflowMeta(
@@ -26,7 +26,7 @@ class JobAlertWholePoolExperimentWorkflow(JobAlertDigestWorkflow):
     def config(self, ctx: WorkflowContext) -> JobAlertDigestWorkflowConfig:
         return JobAlertDigestWorkflowConfig.model_validate({"workflow_type": self.workflow_type, **ctx.definition.config})
 
-    def _bucket_prompt_path(self) -> Path:
+    def _review_prompt_path(self) -> Path:
         return resolve_project_path("config/prompts/job_alert_bucket_review.txt")
 
     def _format_candidate_pool(self, jobs) -> str:
@@ -47,11 +47,6 @@ class JobAlertWholePoolExperimentWorkflow(JobAlertDigestWorkflow):
             )
         return "\n\n".join(lines)
 
-    def _parse_sections(self, text: str) -> list[SectionContent]:
-        names = ["Top Matches", "Worth a Look", "Not a Fit"]
-        parsed = self._parse_editor_output(text, names)
-        return [SectionContent(name=name, summary=parsed[name]) for name in names]
-
     def synthesize(self, ctx: WorkflowContext, gathered: WorkflowContent) -> WorkflowContent:
         config = self.config(ctx)
         section = gathered.sections[0] if gathered.sections else SectionContent(name="Job Alerts", items=[])
@@ -60,15 +55,15 @@ class JobAlertWholePoolExperimentWorkflow(JobAlertDigestWorkflow):
             jobs.extend(self._extract_jobs_from_item(ctx, item))
         jobs = self._dedupe_jobs(jobs)
 
-        candidates_artifact = ctx.artifact_path("whole_pool_candidates.json")
+        candidates_artifact = ctx.artifact_path("candidates.json")
         candidates_artifact.write_text(
             json.dumps([job.model_dump(mode="json") for job in jobs], indent=2, ensure_ascii=False),
             encoding="utf-8",
         )
-        ctx.artifacts["whole_pool_candidates"] = candidates_artifact
+        ctx.artifacts["candidates"] = candidates_artifact
 
         review_pool = jobs[: min(len(jobs), 25)]
-        prompt = self._bucket_prompt_path().read_text(encoding="utf-8").format(
+        prompt = self._review_prompt_path().read_text(encoding="utf-8").format(
             profile=self._read_profile(ctx),
             candidate_pool=self._format_candidate_pool(review_pool),
             target_functions=", ".join(config.target_functions) or "Not specified",
@@ -80,15 +75,17 @@ class JobAlertWholePoolExperimentWorkflow(JobAlertDigestWorkflow):
         )
         response = ctx.llm_provider.complete(prompt, config)
         raw_text = response.text.strip()
-        raw_artifact = ctx.artifact_path("whole_pool_review_raw.txt")
+        raw_artifact = ctx.artifact_path("review_raw.txt")
         raw_artifact.write_text(raw_text, encoding="utf-8")
-        ctx.artifacts["whole_pool_review_raw"] = raw_artifact
+        ctx.artifacts["review_raw"] = raw_artifact
 
-        final_sections = self._parse_sections(raw_text)
+        names = ["Top Matches", "Worth a Look", "Not a Fit"]
+        parsed = self._parse_editor_output(raw_text, names)
+        final_sections = [SectionContent(name=name, summary=parsed[name] or "No strong items.") for name in names]
         return WorkflowContent(sections=final_sections, metadata={"raw_review": raw_text})
 
     def render(self, ctx: WorkflowContext, content: WorkflowContent) -> RenderedEmail:
-        subject = "Job Alert Whole-Pool Experiment"
+        subject = "Job Alert Simple Review"
         date_label = datetime.now().strftime("%A, %d %B %Y")
         lines = [subject, f"Date: {date_label}", "=" * 60, ""]
         for section in content.sections:

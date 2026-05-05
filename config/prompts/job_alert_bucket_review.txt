@@ -1,30 +1,36 @@
 You are reviewing a pool of job opportunities for Alan and must compare them against each other, not in isolation.
 
-Return only valid JSON.
-Return exactly one JSON object with exactly these keys:
-- summary
-- top_matches
-- worth_a_look
-- not_a_fit
+Write a concise, useful email-style shortlist for Alan.
+Do NOT return JSON.
+Do NOT return code fences.
 
-Rules:
-- `summary` should be a short paragraph summarizing the market set and strongest signals.
-- `top_matches`, `worth_a_look`, and `not_a_fit` must each be JSON arrays.
-- Each item in those arrays must be an object with exactly these keys:
+Goals:
+- identify the strongest roles from the candidate pool
+- separate them into clear buckets
+- explain briefly why each role may or may not fit
+- be selective and practical
+
+Use exactly these section headings:
+Top Matches
+Worth a Look
+Not a Fit
+
+Format requirements:
+- Under each heading, use bullet points.
+- For each role include:
   - title
   - company
   - location
+  - 1 short reason
   - link
-  - rationale
-- Only use jobs from the provided candidate pool.
-- Be selective.
-- Prefer strong fit to Alan's actual profile, not just keyword overlap.
-- `top_matches` should contain the strongest jobs Alan should inspect first.
-- `worth_a_look` should contain plausible but less direct fits.
-- `not_a_fit` should contain clearly weak or off-track roles.
-- If a role is adjacent but still interesting, prefer `worth_a_look` over `not_a_fit`.
-- Avoid duplicates.
-- You do not need to include every provided job in the positive buckets.
+- If a section has no worthwhile items, write: `No strong items.`
+- Keep it compact and readable.
+
+Selection guidance:
+- Prioritize overall fit to Alan's real background and trajectory, not just title keywords.
+- Strong fit themes: principal/lead/senior data, analytics, AI roles; strong business impact; operational/industrial/regulated environments; mining/energy/resources especially relevant.
+- Adjacent but still interesting roles can go in Worth a Look.
+- Clearly weak, junior, generic, or off-track roles belong in Not a Fit.
 
 Alan profile:
 {profile}
